@@ -1,0 +1,23 @@
+{
+  "name": "xaddax/behat-graphql-extension",
+  "type": "library",
+  "description": "GraqhQL extension for Behat",
+  "keywords": ["behat", "testing", "api", "GraphQL", "http"], 
+  "license": "MIT",
+  "require": {
+    "php": ">=5.6",
+    "behat/behat": "^3.0",
+    "guzzlehttp/guzzle": "^6.0",
+    "beberlei/assert": "^2.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Xaddax\\BehatGgraphExtension\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Xaddax\\BehatGgraphExtension\\": "tests/"
+    }
+  }
+}
