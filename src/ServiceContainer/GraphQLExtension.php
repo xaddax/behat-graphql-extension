@@ -34,19 +34,27 @@ final class GraphQLExtension implements ExtensionInterface
                     ->ignoreExtraKeys(false)
                     ->end()
                 ->scalarNode('baseUrl')
-                    ->isRequired()
                     ->cannotBeEmpty()
                     ->defaultValue('http://localhost:8080')
                     ->end()
                 ->scalarNode('path')
-                    ->isRequired()
                     ->cannotBeEmpty()
                     ->defaultValue('graphql')
                     ->end()
                 ->scalarNode('method')
-                    ->isRequired()
                     ->cannotBeEmpty()
                     ->defaultValue('POST')
+                    ->end()
+                ->arrayNode('server')
+                ->addDefaultsIfNotSet()
+                    ->ignoreExtraKeys(true)
+                    ->children()
+                        ->scalarNode('php')
+                            ->cannotBeEmpty()
+                            ->defaultValue('php')
+                            ->end()
+                        ->scalarNode('publicFolder')
+                            ->end()
                     ->end()
             ->end();
     }
@@ -67,7 +75,7 @@ final class GraphQLExtension implements ExtensionInterface
     private function loadContextInitializer(ContainerBuilder $container, $config)
     {
         $definition = new Definition(
-            'Xaddax\GraphqlExtension\Context\Initializer\ApiClientAwareInitializer', [
+            'Xaddax\GraphQLExtension\Context\Initializer\ApiClientAwareInitializer', [
             new Reference(self::CLIENT_ID),
             $config,
         ]
