@@ -37,8 +37,8 @@ final class ApiClientAwareInitializer implements ContextInitializer
     public function initializeContext(Context $context)
     {
         if ($context instanceof ApiClientAwareContext) {
+            $context->setConfig($this->config); // must be set before client
             $context->setClient($this->client);
-            $context->setConfig($this->config);
         }
     }
 }
