@@ -12,12 +12,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Xaddax\\BehatGgraphExtension\\": "src/"
+      "Xaddax\\GraphQLExtension\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Xaddax\\BehatGgraphExtension\\": "tests/"
+      "Xaddax\\GraphQLExtension\\": "tests/"
     }
   }
 }

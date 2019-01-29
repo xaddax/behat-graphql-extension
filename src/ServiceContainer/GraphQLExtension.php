@@ -8,8 +8,10 @@ use Behat\Testwork\ServiceContainer\Extension as ExtensionInterface;
 use Behat\Testwork\ServiceContainer\ExtensionManager;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
-final class GraphQLExtention implements ExtensionInterface
+final class GraphQLExtension implements ExtensionInterface
 {
     const CLIENT_ID = 'graphql.client';
 
@@ -72,5 +74,13 @@ final class GraphQLExtention implements ExtensionInterface
         );
         $definition->addTag(ContextExtension::INITIALIZER_TAG);
         $container->setDefinition('graphql.context_initializer', $definition);
+    }
+
+    /**
+     * You can modify the container here before it is dumped to PHP code.
+     */
+    public function process(ContainerBuilder $container)
+    {
+        // TODO: Implement process() method.
     }
 }
