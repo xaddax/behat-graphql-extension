@@ -14,6 +14,7 @@ use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
+use Symfony\Component\Process\Process;
 use Xaddax\GraphQLExtension\Exception\AssertionFailedException as GraphQLAssertionFailedException;
 use function GuzzleHttp\Psr7\stream_for;
 use function GuzzleHttp\Psr7\uri_for;
@@ -32,7 +33,7 @@ class GraphQLContext implements ApiClientAwareContext
     private $response;
     /** @var Uri */
     private $uri;
-
+    /** @var Process */
     static private $serverProcess;
 
     /**
@@ -40,7 +41,7 @@ class GraphQLContext implements ApiClientAwareContext
      */
     public static function shutDownServer(AfterFeatureScope $scope)
     {
-        proc_close(self::$serverProcess);
+        self::$serverProcess->stop(3, SIGKILL);
     }
 
     /**
@@ -48,23 +49,14 @@ class GraphQLContext implements ApiClientAwareContext
      */
     public function thePhpDslCodeServiceIsRunning()
     {
-        $descriptorSpec = [
-            0 => ["pipe", "r"],  // stdin is a pipe that the child will read from
-            1 => ["pipe", "w"],  // stdout is a pipe that the child will write to
-            2 => array("file", "/tmp/error-output.txt", "a") // stderr is a file to write to
-        ];
-        $pipes = [];
         $serverConfig = $this->config['server'];
         $php = $serverConfig['php'];
         $publicFolder = $serverConfig['publicFolder'];
         $serverUri = "{$this->uri->getHost()}:{$this->uri->getPort()}";
         $cmd = "$php -S $serverUri -t $publicFolder";
 
-
-
-
-
-        self::$serverProcess = proc_open($cmd, $descriptorSpec, $pipes);
+        self::$serverProcess = new Process($cmd);
+        self::$serverProcess->start();
     }
 
     /**
